@@ -51,16 +51,20 @@ local function selectField(step)
 end
 
 local function drawProgressBar()
-  local width = (390 * refreshIndex) / #fields
-  lcd.drawRectangle(45, 1, 390, 6)
-  lcd.drawFilledRectangle(47, 3, width, 2);
+  local width = (330 * refreshIndex) / #fields
+  lcd.drawRectangle(80, 15, 330, 10)
+  lcd.drawFilledRectangle(81, 17, width, 8);
 end
 
 -- Redraw the current page
 local function redrawFieldsPage()
   lcd.clear()
-  lcd.drawText(1,10,"SD1",DBLSIZE)
-  lcd.drawText(479,10,page.."/"..#pages,DBLSIZE + RIGHT)
+--  lcd.drawRectangle(0,0,479,20,SOLID)
+  lcd.drawRectangle(2, 2, 476, 38, SOLID)
+  lcd.drawText(10,2,"SD1",DBLSIZE)
+  lcd.drawText(476,2,page.."/"..#pages,DBLSIZE + RIGHT)
+
+
   --lcd.drawScreenTitle("SD1", page, #pages)
   if refreshIndex < #fields then
     drawProgressBar()
@@ -73,17 +77,19 @@ local function redrawFieldsPage()
     end
 
     local attr = current == (pageOffset+index) and ((edit == true and BLINK or 0) + INVERS) or 0
+	lcd.drawRectangle(2, 86, 476, 40, SOLID)
 
-    lcd.drawText(1, 50+8*index, field[1], DBLSIZE)
+    
+	lcd.drawText(10, 87*index, field[1], DBLSIZE)
 
     if field[4] == nil then
-      lcd.drawText(LCD_W, 50+8*index, "---", attr + RIGHT + DBLSIZE)
+      lcd.drawText(LCD_W-5, 90*index, "---", attr + RIGHT + DBLSIZE)
     else
       if field[2] == VALUE then
-        lcd.drawNumber(LCD_W, 50+8*index, field[4], attr + RIGHT + DBLSIZE)
+        lcd.drawNumber(LCD_W-5, 90*index, field[4], attr + RIGHT + DBLSIZE)
       elseif field[2] == COMBO then
         if field[4] >= 0 and field[4] < #(field[5]) then
-          lcd.drawText(LCD_W, 50+8*index, field[5][1+field[4]], attr + RIGHT + DBLSIZE)
+          lcd.drawText(LCD_W-5, 90*index, field[5][1+field[4]], attr + RIGHT + DBLSIZE)
         end
       end
     end
